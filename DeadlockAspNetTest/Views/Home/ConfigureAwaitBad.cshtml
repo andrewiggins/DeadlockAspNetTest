@@ -1,0 +1,12 @@
+﻿@model DeadlockAspNetTest.Models.ViewModel
+@{
+    ViewBag.Title = "ConfigureAwaitBad";
+}
+
+<h1>ConfigureAwaitBad</h1>
+<p>
+    Passes false to <code>ConfigureAwait</code> but tries to reference <code>HttpContext.Current</code> which
+    fails since we passed <code>false</code>
+<p>
+
+    @Html.Partial("_DataResult", Model)

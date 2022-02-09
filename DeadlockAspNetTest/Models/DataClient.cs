@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -32,6 +33,24 @@ namespace DeadlockAspNetTest.Models
         public static Task<string> GetCachedDataAsync()
         {
             return Task.FromResult("some synchronous cached data");
+        }
+
+        public static async Task<string> GetDataConfigureAwaitFalseAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                return await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+            }
+        }
+
+        public static async Task<string> GetDataConfigureFalseWithHttpContextAsync()
+        {
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+                Console.WriteLine(HttpContext.Current.Request.QueryString); // Will blow up!
+                return result;
+            }
         }
     }
 }

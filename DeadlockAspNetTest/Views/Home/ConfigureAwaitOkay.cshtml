@@ -1,0 +1,12 @@
+﻿@model DeadlockAspNetTest.Models.ViewModel
+@{
+    ViewBag.Title = "ConfigureAwaitOkay";
+}
+
+<h1>ConfigureAwaitOkay</h1>
+<p>
+    Passes false to <code>ConfigureAwait</code> and succeeds since no other code (before another await maybe) tries to reference
+    <code>HttpContext.Current</code>. It seems using <code>await</code> guarentees the continuation will be continued on the
+    orginal <code>SynchronizationContext</code>
+<p>
+    @Html.Partial("_DataResult", Model)

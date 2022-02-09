@@ -1,8 +1,8 @@
 ﻿@model DeadlockAspNetTest.Models.ViewModel
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "CachedData";
 }
 
-<h1>Cached Data!</h1>
+<h1>CachedData</h1>
 <p>This page calls a method that actually doesn't perform any actual asynchronous operations and so it renders correctly even though it uses <code>GetAwaiter().GetResult()</code><p>
 @Html.Partial("_DataResult", Model)

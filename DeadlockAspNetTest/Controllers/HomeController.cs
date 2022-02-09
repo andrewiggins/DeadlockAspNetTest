@@ -33,5 +33,17 @@ namespace DeadlockAspNetTest.Controllers
             var result = DataClient.GetCachedDataAsync().GetAwaiter().GetResult();
             return View(new ViewModel(result));
         }
+
+        public ActionResult ConfigureAwaitOkay()
+        {
+            var result = DataClient.GetDataConfigureAwaitFalseAsync().GetAwaiter().GetResult();
+            return View(new ViewModel(result));
+        }
+
+        public ActionResult ConfigureAwaitBad()
+        {
+            var result = DataClient.GetDataConfigureFalseWithHttpContextAsync().GetAwaiter().GetResult();
+            return View(new ViewModel(result));
+        }
     }
 }

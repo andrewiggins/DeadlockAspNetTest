@@ -112,6 +112,8 @@
     <Content Include="Views\Home\Deadlock.cshtml" />
     <Content Include="Views\Home\AsyncAwait.cshtml" />
     <Content Include="Views\Home\CachedData.cshtml" />
+    <Content Include="Views\Home\ConfigureAwaitOkay.cshtml" />
+    <Content Include="Views\Home\ConfigureAwaitBad.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
