@@ -2,5 +2,16 @@
     ViewBag.Title = "Index";
 }
 
-<h1>Hello World!</h1>
-<p>from Home/Index view<p>
+<h1>Dealing with async data in ASP.NET MVC 5 (.Net Framework)</h1>
+<ul>
+    <li><a href="/Home/AsyncAwait">Using async/await</a></li>
+    <li><a href="/Home/Deadlock">Using <code>GetAwaiter().GetResult()</code> on async data</a> (will never load due to deadlock)</li>
+    <li><a href="/Home/CachedData">Using <code>GetAwaiter().GetResult()</code> on synchronous data</a></li>
+</ul>
+
+<h2>TODO</h2>
+<ul>
+    <li>Write up detailed explanation for each situation</li>
+    <li>Add <code>ConfigureAwait(false)</code> that is safe</li>
+    <li>Add <code>ConfigureAwait(false)</code> that is fails</li>
+</ul>

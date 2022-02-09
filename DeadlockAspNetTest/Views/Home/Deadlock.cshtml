@@ -1,0 +1,8 @@
+﻿@model DeadlockAspNetTest.Models.ViewModel
+@{
+    ViewBag.Title = "Deadlock";
+}
+
+<h1>Deadlock page</h1>
+<p>We'll never see this view cuz the controller action deadlocks :(<p>
+@Html.Partial("_DataResult", Model)
