@@ -1,0 +1,4 @@
+﻿<p>
+    This demo tries to load asynchronous data using <code>.GetAwaiter().GetResult()</code>. However, this causes a deadlock
+    since the completion of the API call tries to schedule a continutation on the context that is currently blocking to wait for the continuation.
+<p>

@@ -1,0 +1,9 @@
+﻿<p>
+    This demo passes false to <code>ConfigureAwait</code> on the asynchronous API call. This call tells .NET to not schedule the task continuation on the same context as
+    the original API call. Not scheduling on the same context prevents the deadlock from using <code>GetAwaiter().GetResult()</code> since the continuation is scheduled
+    on a new context and not the same context that is blocked.
+</p>
+<p>   
+    However, using <code>ConfigureAwait(false)</code> can be bad if your code in the continuation tries to reference something from that original context
+    (e.g. <code>HttpContext.current</code>). This code doesn't and so it succeeds.
+<p>

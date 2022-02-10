@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 
 namespace DeadlockAspNetTest.Models
 {
@@ -35,6 +34,10 @@ namespace DeadlockAspNetTest.Models
             return Task.FromResult("some synchronous cached data");
         }
 
+        /// <summary>
+        /// A method that makes an asynchronous API call and calls ConfigureAwait(false) on the API method
+        /// </summary>
+        /// <returns></returns>
         public static async Task<string> GetDataConfigureAwaitFalseAsync()
         {
             using (var client = new HttpClient())
@@ -43,12 +46,17 @@ namespace DeadlockAspNetTest.Models
             }
         }
 
+        /// <summary>
+        /// A method that makes an asynchronous API call and calls ConfigureAwait(false) on the API method,
+        /// but also tries to access System.Web.HttpContext.Current right after calling ConfigureAwait(false)
+        /// </summary>
+        /// <returns></returns>
         public static async Task<string> GetDataConfigureFalseWithHttpContextAsync()
         {
             using (var client = new HttpClient())
             {
                 var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
-                Console.WriteLine(HttpContext.Current.Request.QueryString); // Will blow up!
+                Console.WriteLine(System.Web.HttpContext.Current.Request.QueryString); // Will blow up!
                 return result;
             }
         }

@@ -89,6 +89,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\spectre.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -114,6 +115,11 @@
     <Content Include="Views\Home\CachedData.cshtml" />
     <Content Include="Views\Home\ConfigureAwaitOkay.cshtml" />
     <Content Include="Views\Home\ConfigureAwaitBad.cshtml" />
+    <Content Include="Views\Shared\Explanations\_AsyncAwait.cshtml" />
+    <Content Include="Views\Shared\Explanations\_CachedData.cshtml" />
+    <Content Include="Views\Shared\Explanations\_ConfigureAwaitBad.cshtml" />
+    <Content Include="Views\Shared\Explanations\_ConfigureAwaitOkay.cshtml" />
+    <Content Include="Views\Shared\Explanations\_Deadlock.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

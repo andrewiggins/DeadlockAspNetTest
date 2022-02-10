@@ -3,17 +3,52 @@
 }
 
 <h1>Dealing with async data in ASP.NET MVC 5 (.Net Framework)</h1>
-<ul>
-    <li><a href="/Home/AsyncAwait">Using async/await</a></li>
-    <li><a href="/Home/Deadlock">Using <code>GetAwaiter().GetResult()</code> on async data</a> (will never load due to deadlock)</li>
-    <li><a href="/Home/CachedData">Using <code>GetAwaiter().GetResult()</code> on synchronous data</a></li>
-    <li><a href="/Home/ConfigureAwaitOkay">Using <code>GetAwaiter().GetResult()</code> on async data with <code>ConfigureAwait(false)</code> that works</a></li>
-    <li><a href="/Home/ConfigureAwaitBad">Using <code>GetAwaiter().GetResult()</code> on async data with <code>ConfigureAwait(false)</code> that fails</a></li>
-</ul>
 
-<h2>TODO</h2>
+<blockquote>Note: <code>GetAwaiter().GetResult()</code>, <code>Task.Result</code>, and <code>Task.Wait()</code> are all basically functionally equivalent in these scenarios</blockquote>
+
+<p>"Continuation" below refers to the function that runs after the asynchronous callback completes. Keep in mind that async/await basically transforms:</p>
+<pre class="code" data-lang="C#"><code>public async Task&lt;String> DownloadStringV1(String url)
+{
+    var request = await HttpClient.GetAsync(url);
+    var download = await request.Content.ReadAsStringAsync();
+    return download;
+}</code></pre>
+<p>into:</p>
+<pre class="code" data-lang="C#"><code>public Task<String> DownloadStringV2(String url) 
+{
+    var request = HttpClient.GetAsync(url); 
+    var download = request.ContinueWith(http => {
+        http.Result.Content.ReadAsStringAsync();
+    });
+    return download.Unwrap(); 
+}</code></pre>
+<p>The anonymous method inside the <code>ContinueWith</code> call is the continuation.</p>
+
+<h2>Using async/await</h2>
+<p><a href="/Home/AsyncAwait">Demo</a></p>
+<p></p>
+@Html.Partial("Explanations/_AsyncAwait")
+
+<h2>Using <code>GetAwaiter().GetResult()</code> on async data</h2>
+<blockquote>Note: Demo page will never load. It hangs forever cuz the request thread is deadlocked.</blockquote>
+<p><a href="/Home/Deadlock">Demo</a></p>
+@Html.Partial("Explanations/_Deadlock")
+
+<h2>Using <code>GetAwaiter().GetResult()</code> on synchronous</h2>
+<p><a href="/Home/CachedData">Demo</a></p>
+@Html.Partial("Explanations/_CachedData")
+
+<h2>Using <code>GetAwaiter().GetResult()</code> on async data with <code>ConfigureAwait(false)</code> that works</h2>
+<p><a href="/Home/ConfigureAwaitOkay">Demo</a></p>
+@Html.Partial("Explanations/_ConfigureAwaitOkay")
+
+<h2>Using <code>GetAwaiter().GetResult()</code> on async data with <code>ConfigureAwait(false)</code> that fails</h2>
+<p><a href="/Home/ConfigureAwaitBad">Demo</a></p>
+@Html.Partial("Explanations/_ConfigureAwaitBad")
+
+<h2>Useful links</h2>
 <ul>
-    <li>Write up detailed explanation for each situation on the webpage and in the Readme</li>
-    <li>Add comments to methods</li>
-    <li>Make note how GetAwaiter().GetResult() is equivalent to task.Result or task.Wait()</li>
+    <li><a href="https://medium.com/rubrikkgroup/understanding-async-avoiding-deadlocks-e41f8f2c6f5d" target="_blank" rel="noopener">Understanding Async, Avoiding Deadlocks in C#</a></li>
+    <li><a href="https://devblogs.microsoft.com/pfxteam/await-and-ui-and-deadlocks-oh-my/" target="_blank" rel="noopener">Await, and UI, and deadlocks! Oh my!</a></li>
+    <li><a href="https://devblogs.microsoft.com/dotnet/configureawait-faq/" target="_blank" rel="noopener">ConfigureAwait FAQ</a></li>
 </ul>
