@@ -1,0 +1,43 @@
+﻿<Window x:Class="DeadlockWpfApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DeadlockWpfApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel Margin="16">
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="AsyncButton" Content="Load using async/await" Click="AsyncButton_Click" />
+            <TextBlock x:Name="AsyncResult" Text="(async/await result)" TextWrapping="NoWrap" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="ContinuationButton" Content="Load using continutation" Click="ContinuationButton_Click" />
+            <TextBlock x:Name="ContinuationResult" Text="(continuation result)" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="ContinuationDispatcherButton" Content="Load using continutation &amp; dispatcher" Click="ContinuationDispatcherButton_Click" />
+            <TextBlock x:Name="ContinuationDispatcherResult" Text="(continuation with dispatcher result)" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="SyncContextButton" Content="Load using SyncContext" Click="SyncContextButton_Click" />
+            <TextBlock x:Name="SyncContextResult" Text="(SyncContext result)" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="TaskSchedulerButton" Content="Load using TaskScheduler" Click="TaskSchedulerButton_Click" />
+            <TextBlock x:Name="TaskSchedulerResult" Text="(TaskScheduler result)" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="SyncDeadlockButton" Content="Load using .Result" Click="SyncDeadlockButton_Click" />
+            <TextBlock x:Name="SyncDeadlockResult" Text="(Sync Deadlock result)" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="ConfigureAwaitFalse" Content="Load using ConfigureAwaitFalse" Click="ConfigureAwaitFalse_Click" />
+            <TextBlock x:Name="ConfigureAwaitFalseResult" Text="(ConfigureAwaitFalse result)" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Button x:Name="CachedAsyncData" Content="Load cache async data" Click="CachedAsyncData_Click" />
+            <TextBlock x:Name="CachedAsyncDataResult" Text="(CachedAsyncData result)" />
+        </StackPanel>
+    </StackPanel>
+</Window>

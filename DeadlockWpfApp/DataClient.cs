@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Threading;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace DeadlockAspNetTest.Models
+namespace DeadlockWpfApp
 {
-    public static class DataClient
+    internal class DataClient
     {
         private const string DataUrl = "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration";
 
@@ -43,21 +41,6 @@ namespace DeadlockAspNetTest.Models
             using (var client = new HttpClient())
             {
                 return await client.GetStringAsync(DataUrl).ConfigureAwait(false);
-            }
-        }
-
-        /// <summary>
-        /// A method that makes an asynchronous API call and calls ConfigureAwait(false) on the API method,
-        /// but also tries to access System.Web.HttpContext.Current right after calling ConfigureAwait(false)
-        /// </summary>
-        /// <returns></returns>
-        public static async Task<string> GetDataConfigureFalseWithHttpContextAsync()
-        {
-            using (var client = new HttpClient())
-            {
-                var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
-                Console.WriteLine(UserSession.Current.Request.QueryString); // Will blow up!
-                return result;
             }
         }
 
