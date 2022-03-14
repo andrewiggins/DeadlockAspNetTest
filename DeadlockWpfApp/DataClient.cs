@@ -19,7 +19,8 @@ namespace DeadlockWpfApp
         {
             using (var client = new HttpClient())
             {
-                return await client.GetStringAsync(DataUrl);
+                var result = await client.GetStringAsync(DataUrl);
+                return result;
             }
         }
 
@@ -40,7 +41,8 @@ namespace DeadlockWpfApp
         {
             using (var client = new HttpClient())
             {
-                return await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+                var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+                return result;
             }
         }
 

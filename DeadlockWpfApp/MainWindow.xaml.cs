@@ -78,11 +78,11 @@ namespace DeadlockWpfApp
         {
             SyncContextResult.Text = "Loading...";
             var syncContext = SynchronizationContext.Current!;
-            DataClient.GetDataAsync().ContinueWith(t =>
+            DataClient.GetDataAsync().ContinueWith(task =>
             {
-                syncContext.Post(delegate
+                syncContext.Post(_ =>
                 {
-                    SyncContextResult.Text = t.Result;
+                    SyncContextResult.Text = task.Result;
                 }, null);
             });
         }
@@ -95,9 +95,9 @@ namespace DeadlockWpfApp
         private void TaskSchedulerButton_Click(object sender, RoutedEventArgs e)
         {
             TaskSchedulerResult.Text = "Loading...";
-            DataClient.GetDataAsync().ContinueWith(t =>
+            DataClient.GetDataAsync().ContinueWith(task =>
             {
-                TaskSchedulerResult.Text = t.Result;
+                TaskSchedulerResult.Text = task.Result;
             }, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
@@ -108,7 +108,12 @@ namespace DeadlockWpfApp
         /// <param name="e"></param>
         private void SyncDeadlockButton_Click(object sender, RoutedEventArgs e)
         {
-            SyncDeadlockResult.Text = DataClient.GetDataAsync().GetAwaiter().GetResult();
+            var task = DataClient.GetDataAsync();
+            task.Wait();
+            SyncDeadlockResult.Text = task.Result;
+
+            // Same as:
+            //SyncDeadlockResult.Text = DataClient.GetDataAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -118,7 +123,9 @@ namespace DeadlockWpfApp
         /// <param name="e"></param>
         private void ConfigureAwaitFalse_Click(object sender, RoutedEventArgs e)
         {
-            ConfigureAwaitFalseResult.Text = DataClient.GetDataConfigureAwaitFalseAsync().GetAwaiter().GetResult();
+            var task = DataClient.GetDataConfigureAwaitFalseAsync();
+            task.Wait();
+            ConfigureAwaitFalseResult.Text = task.Result;
         }
 
         /// <summary>
