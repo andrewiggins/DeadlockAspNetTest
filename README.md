@@ -1,6 +1,6 @@
 # DeadlockAspNetTest
 
-Sandbox to demonstrate various situations in which ASP.Net MVC 5 (not Core) may fail
+Sandbox to demonstrate various situations in which WPF & ASP.Net MVC 5 (not Core) may deadlock with async/await patterns
 
 ## Brief Summary
 
@@ -8,7 +8,7 @@ Use `async/await`
 
 Using `GetAwaiter().GetResult()` could result if deadlocks if the synchronization context that is synchronously waiting for the result is also the synchronization context that has to run the continuation of the async API call.
 
-Using `ConfigureAwait(false)` can prevent the deadlock as it allows continuations to run on the default synchronization context, but may cause problems if the continuation callback references something the synchronization context (e.g. `HttpContext.Current`)
+Using `ConfigureAwait(false)` can prevent the deadlock as it allows continuations to run on the default synchronization context, but may cause problems if the continuation callback references something the synchronization context (e.g. `HttpContext.Current`) syncrhonizes
 
 ## Useful links
 
