@@ -7,6 +7,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+using UserSession = System.Web.HttpContext;
+
 namespace DeadlockAspNetTest.Models
 {
     public static class DataClient
@@ -21,7 +23,8 @@ namespace DeadlockAspNetTest.Models
         {
             using (var client = new HttpClient())
             {
-                return await client.GetStringAsync(DataUrl);
+                var result = await client.GetStringAsync(DataUrl);
+                return result;
             }
         }
 
@@ -42,27 +45,42 @@ namespace DeadlockAspNetTest.Models
         {
             using (var client = new HttpClient())
             {
-                return await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+                var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+                return result;
             }
         }
 
         /// <summary>
         /// A method that makes an asynchronous API call and calls ConfigureAwait(false) on the API method,
         /// but also tries to access System.Web.HttpContext.Current right after calling ConfigureAwait(false)
-        /// </summary>
+        /// </summary>D
         /// <returns></returns>
         public static async Task<string> GetDataConfigureFalseWithHttpContextAsync()
         {
             using (var client = new HttpClient())
             {
                 var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
-                Console.WriteLine(UserSession.Current.Request.QueryString); // Will blow up!
+                Console.WriteLine(UserSession.Current.Request.Url.ToString()); // Will blow up!
                 return result;
             }
         }
 
-        // Other ConfigureAwait(false) footguns:
-        // - Taking in a callback/delegate that requires being on the same SyncContext
+        /// <summary>
+        /// A method that makes an asynchronous API call and calls ConfigureAwait(false) on the API method,
+        /// but also invokes a user callback that tries to access System.Web.HttpContext.Current
+        /// right after calling ConfigureAwait(false)
+        /// </summary>D
+        /// <returns></returns>
+        public static async Task<string> GetDataConfigureFalseWithCallbackAsync(Action callback)
+        {
+            using (var client = new HttpClient())
+            {
+                var result = await client.GetStringAsync(DataUrl).ConfigureAwait(false);
+                callback(); // Will blow up with Console.WriteLine(UserSession.Current.Request.Url.ToString());
+                return result;
+            }
+        }
+        
         // - Only calling ConfigureAwait(false) on the first async method and not all
     }
 }

@@ -70,5 +70,18 @@ namespace DeadlockAspNetTest.Controllers
             var result = DataClient.GetDataConfigureFalseWithHttpContextAsync().GetAwaiter().GetResult();
             return View(new ViewModel(result));
         }
+
+        /// <summary>
+        /// Demonstrate calling an async method that uses ConfigureAwait(false) using GetAwaiter().GetResult().
+        /// ConfigureAwait(false) prevents the deadlock from happening! But doesn't resume with the same syncrhonization context
+        /// (i.e. HttpContext.Current == null). This method fails cuz HttpContext.Current is used but is null :(
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ConfigureAwaitCallback()
+        {
+            Action callback = () => Console.WriteLine(System.Web.HttpContext.Current.Request.Url.ToString());
+            var result = DataClient.GetDataConfigureFalseWithCallbackAsync(callback).GetAwaiter().GetResult();
+            return View(new ViewModel(result));
+        }
     }
 }
